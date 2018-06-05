@@ -47,6 +47,7 @@ def list_shows(context):
             is_folder = True
             if index == 0:
                 is_folder = False
+            # Pass 'listing' and show index
             url = '{0}?action=listing&show={1}'.format(__url__, str(index))
             # is_folder = True means that this item opens a sub-list of lower level items.
 
@@ -62,7 +63,7 @@ def list_shows(context):
     # Finish creating a virtual folder.
     xbmcplugin.endOfDirectory(__handle__)
     
-def list_episodes(context, index):
+def list_episodes(context, show):
     # Get video categories
     showid = context['showList']
     episodes = context['episodes']
@@ -73,8 +74,8 @@ def list_episodes(context, index):
     for episode in episodes:
         # Create a list item with a text label and a thumbnail image.
         list_item = xbmcgui.ListItem(label=episode['title'], label2='Test Label 2', thumbnailImage=episode['image'])
-        list_item.setInfo('video', 'Test Info')
-        url = '{0}?action=play&url={1}&index={2}'.format(__url__, episode['link'], index)
+        #list_item.setInfo('video', 'Test Info')
+        url = '{0}?action=play&url={1}&episode={2}&show={3}'.format(__url__, episode['link'], encode(episode['title']), show)
         is_folder = False
         listing.append((url, list_item, is_folder))
         index += 1
@@ -88,6 +89,7 @@ def dispatch(url, handle, parameter):
     action = None
     show = None
     url = None
+    episode = None
     if parameters != None:
         for action in parameters:
             logStr = action + " = " + parameters[action]
@@ -98,6 +100,8 @@ def dispatch(url, handle, parameter):
             show = int(parameters['show'])
         if 'url' in parameters:
             url = parameters['url']
+        if 'episode' in parameters:
+            episode = parameters['episode']
     else:
         xbmc.log("No actions", xbmc.LOGINFO)
         action = None   
@@ -113,7 +117,7 @@ def dispatch(url, handle, parameter):
         if show == 0:
             video = context['episodes'][0]['link']
             resolved_video = loader.resolveLiveUrl(video)
-            listitem = xbmcgui.ListItem('Ironman')
+            listitem = xbmcgui.ListItem('')
             listitem.setInfo('video', {'Title': '', 'Genre': ''})
             player = Hr3Player()
             player.play(resolved_video, listitem)
@@ -121,6 +125,10 @@ def dispatch(url, handle, parameter):
             list_episodes(context, show)
     elif action == 'play':
         video = getVideoLink(url)
-        listitem = xbmcgui.ListItem('Ironman')
-        listitem.setInfo('video', {'Title': 'Title', 'Genre': 'Genre'})
+        listitem = xbmcgui.ListItem('')
+        id = getShowId(context, show)
+        title = context['showList'][show]['name']
+        ep = decode(episode)
+        #ep = context['episodes'][episode]
+        listitem.setInfo('video', {'Title': title, 'Genre': ep})
         Hr3Player().play(video, listitem)

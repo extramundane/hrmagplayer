@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import urllib
 from libplayer.http import *
 
 def extractParameters(actions):
@@ -39,3 +40,9 @@ def getVideoLink(url):
 
 def getShowId(context, index):
     return context['showList'][index]['id']
+
+def encode(string):
+    return urllib.quote_plus(string)
+    
+def decode(string):
+    return urllib.unquote_plus(string)

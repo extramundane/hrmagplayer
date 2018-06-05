@@ -27,3 +27,5 @@ class HttpRetriever:
     def getShowListUrl(self, cid):
         return self.baseurl + cid + self.categoryurl + self.resource
     
+
+    
