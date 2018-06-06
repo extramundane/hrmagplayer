@@ -8,8 +8,6 @@ class Show:
 
         article = self.getArticle(context, page)
         while article != None:
-            #print "----------------------------------"
-            #print article
             if self.hasVideo(article):
                 episode = dict()
             
@@ -26,15 +24,9 @@ class Show:
             article = self.getArticle(context, page)
             
         # Check for cluster items
-        #print "------------- ClusterTeaser: char index " + str(context['charIndex'])
         clusterItem = self.getClusterItem(context, page)
 
         while clusterItem != None:
-            #print "========================================="
-            #print clusterItem
-            #print self.getClusterTitle(clusterItem)
-            #print self.getClusterDate(clusterItem)
-            #print self.getClusterLink(clusterItem)
             episode = dict()
             episode['image'] = ''
             episode['date'] = self.getClusterDate(clusterItem)
@@ -121,10 +113,10 @@ class Show:
     def getClusterItem(self, context, page):
         item = None
         ix = page.find('clusterTeaser__item', context['charIndex'])
-        print ix
+        #print ix
         if ix != -1:
             ex = page.find('</a>', ix)
-            print ex
+            #print ex
             if ex != -1:
                 context['charIndex'] = ex + 5
                 item = page[ix:ex].replace("\n", '')

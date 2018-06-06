@@ -116,7 +116,7 @@ def dispatch(url, handle, parameter):
         # Play live stream immediately
         if show == 0:
             video = context['episodes'][0]['link']
-            resolved_video = loader.resolveLiveUrl(video)
+            resolved_video = loader.resolveLiveUrl(context, video)
             listitem = xbmcgui.ListItem('')
             listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
             player = HrMagPlayer()

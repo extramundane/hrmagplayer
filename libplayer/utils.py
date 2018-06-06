@@ -46,3 +46,10 @@ def encode(string):
     
 def decode(string):
     return urllib.unquote_plus(string)
+
+def isDebug(context):
+    if 'debug' in context:
+        return context['debug']
+    else:
+        return False
+

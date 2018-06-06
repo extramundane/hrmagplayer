@@ -15,7 +15,7 @@ class ChannelContext(dict):
         for show in self['showList']:
             show['url'] = self.getShowUrl(show['id'])
         self['charIndex'] = 0
-        self['debug'] = True
+        self['debug'] = False
 
     def createShowList(self, addon):
         # Create ordered list of shows for quick display
@@ -123,17 +123,18 @@ class ChannelLoader:
             
         episodeList = show.getEpisodes(context, id, page)
         return episodeList
- 
-    def loadEpisode(self, url):
-        video = None
-        video = getVideoLink(url)
-        print video
         
-    def resolveLiveUrl(self, url):
+    def resolveLiveUrl(self, context, url):
         # Get master file and resolve live stream URL
         http = HttpRetriever()
         page = http.get(url)
         url = None
+        
+        if isDebug(context):
+            print('--- Live page ----')
+            print page
+            print('------------------')
+            
         ix = page.find('1280x720')
         if ix != -1:
             ix = page.find('https', ix)
