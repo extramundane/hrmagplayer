@@ -12,8 +12,6 @@ class ChannelContext(dict):
         self['addon'] = addon
         self['showList'] = self.createShowList(addon)
         self['shows'] = self.createShows()
-        for show in self['showList']:
-            show['url'] = self.getShowUrl(show['id'])
         self['charIndex'] = 0
         self['debug'] = False
 
@@ -31,8 +29,8 @@ class ChannelContext(dict):
         reiseId = 'reise-reportagen'
         wdrId = 'wdr-kochen'
         
-        # Maybe create this array of series thumbnials dynamically
-        tNails = {liveId: '',
+        # Maybe create this array of series thumbnails dynamically
+        tNails = {liveId: 'https://www.hessenschau.de/tv-sendung/livestream-100~_t-1469711638787_v-1to1__medium.jpg',
                   schauId: 'https://www.hessenschau.de/tv-sendung/banner-hessenschau-100~_t-1508156576948_v-16to9__small.jpg',
                   carteId: 'https://www.hr-fernsehen.de/sendungen-a-z/hessen-a-la-carte/banner-hessenalacarte-100~_t-1505313904753_v-16to9__small.jpg',
                   herrId: 'https://www.hr-fernsehen.de/sendungen-a-z/herrliches-hessen/banner-herrliches-hessen-100~_t-1504541659007_v-16to9__small.jpg',
@@ -106,7 +104,8 @@ class ChannelLoader:
         self.show = None
         
     def loadEpisodeList(self, context, index):
-        url = context['showList'][index]['url']
+        id = getShowId(context, index)
+        url = context['shows'][id]['url']
         
         http = HttpRetriever()
         page = http.get(url)
