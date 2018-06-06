@@ -16,9 +16,9 @@ __handle__ = int(sys.argv[1])
 
 __context__ = None
 
-class Hr3Player(xbmc.Player):
+class HrMagPlayer(xbmc.Player):
     def __init__(self):
-        print 'Hr3Player initialized'
+        print 'HrMagPlayer initialized'
         xbmc.Player.__init__(self)
     
     def onPlayBackError(self):
@@ -73,7 +73,7 @@ def list_episodes(context, show):
     index = 0
     for episode in episodes:
         # Create a list item with a text label and a thumbnail image.
-        list_item = xbmcgui.ListItem(label=episode['title'], label2='Test Label 2', thumbnailImage=episode['image'])
+        list_item = xbmcgui.ListItem(label=episode['title'], thumbnailImage=episode['image'])
         #list_item.setInfo('video', 'Test Info')
         url = '{0}?action=play&url={1}&episode={2}&show={3}'.format(__url__, episode['link'], encode(episode['title']), show)
         is_folder = False
@@ -118,8 +118,8 @@ def dispatch(url, handle, parameter):
             video = context['episodes'][0]['link']
             resolved_video = loader.resolveLiveUrl(video)
             listitem = xbmcgui.ListItem('')
-            listitem.setInfo('video', {'Title': '', 'Genre': ''})
-            player = Hr3Player()
+            listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
+            player = HrMagPlayer()
             player.play(resolved_video, listitem)
         else:
             list_episodes(context, show)
@@ -131,4 +131,4 @@ def dispatch(url, handle, parameter):
         ep = decode(episode)
         #ep = context['episodes'][episode]
         listitem.setInfo('video', {'Title': title, 'Genre': ep})
-        Hr3Player().play(video, listitem)
+        HrMagPlayer().play(video, listitem)
