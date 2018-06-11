@@ -7,6 +7,7 @@ import xbmcplugin
 import xbmcaddon
 import sys
 from libplayer.channel import *
+from libplayer.livestream import *
 from libplayer.utils import *
 
 # Get the plugin url in plugin:// notation.
@@ -105,8 +106,9 @@ def dispatch(url, handle, parameter):
     else:
         xbmc.log("No actions", xbmc.LOGINFO)
         action = None   
-        
-    context = ChannelContext(xbmcaddon.Addon())
+    
+    addon = xbmcaddon.Addon()
+    context = ChannelContext(addon)
 
     if action == None:
         list_shows(context)
@@ -117,6 +119,14 @@ def dispatch(url, handle, parameter):
         if show == 0:
             video = context['episodes'][0]['link']
             resolved_video = loader.resolveLiveUrl(context, video)
+            
+            live = Livestream()
+            items = live.getLiveAndNext(context)
+            if len(items) > 0:
+                text = "Live:  " + items[0]['time'] + '  ' + items[0]['head'] + "\n" + str(items[0]['sub'])
+                text += "\nNext:  " + items[1]['time'] + '  ' + items[1]['head'] + "\n" + str(items[1]['sub'])
+                xbmcgui.Dialog().ok('Livestream', text)
+            
             listitem = xbmcgui.ListItem('')
             listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
             player = HrMagPlayer()

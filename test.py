@@ -5,9 +5,10 @@ from libplayer.channel import *
 from libplayer.http import *
 from libplayer.magazine import *
 from libplayer.hessenschau import *
+from libplayer.livestream import *
 from libplayer.utils import *
 
-maxrange = 4
+maxrange = 1
 
 if __name__ == "__main__":
     context = ChannelContext(None)
@@ -36,6 +37,8 @@ if __name__ == "__main__":
                 url = getVideoLink(url)
                 print url
             else:
+                live = Livestream()
+                pprint.pprint(live.getLiveAndNext(context))
                 url = loader.resolveLiveUrl(context, context['episodes'][0]['link'])
                 print url
         else:

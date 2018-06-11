@@ -54,6 +54,7 @@ class ChannelContext(dict):
                 wdrId: addon.getSetting(wdrId) == 'true'
                 }
         else:
+            # Testing, no addon object was passed in
             actives = {
                 liveId: True,
                 schauId: True,
