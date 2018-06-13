@@ -9,8 +9,6 @@ class Hessenschau:
         article = self.getArticle(context, page)
         ix = 0
         while article != None:
-            #print "--------------------------"
-            #print article
             if episode != None:
                 if episode['date'] != None:
                     context['episodes'].append(episode)
@@ -28,10 +26,8 @@ class Hessenschau:
     def getArticle(self, context, page):
         article = None
         ix = page.find('li class="c-clusterTeaser__item', context['charIndex'])
-        #print ix
         if ix != -1:
             ex = page.find('</li', ix + 26)
-            #print ex
             if ex != -1:
                 article = page[ix:ex]
                 context['charIndex'] = ex

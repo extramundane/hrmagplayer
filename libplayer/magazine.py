@@ -42,29 +42,22 @@ class Show:
     def getArticle(self, context, page):
         article = None
         ix = page.find('<article', context['charIndex'])
-        #print ix
         if ix != -1:
             ex = page.find('</article', ix)
-            #print ex
             if ex != -1:
                 article = page[ix:ex].replace("\n", '')
                 context['charIndex'] = ex + 9
                 if self.isCluster(article):
                     article = None
                     context['charIndex'] = ix
-        #else:
-        #    context['charIndex'] = 0
         return article
     
     def getImage(self, article):
-        #print("getImage: " + line)
         ret = ''
         s = article.find("data-srcset=")
         if s != -1:
-            #print "Image line: " + line
             s = article.find(chr(34), s) + 1
             e = article.find(' ', s)
-            #print "Image: " + line[s:e]
             ret = article[s:e]
         return ret
 
@@ -74,7 +67,6 @@ class Show:
         if s != -1:
             s = line.find('>', s) + 1
             e = line.find('<', s)
-            #print "Teaser: " + line[s:e]
             ret = line[s:e]
         return ret
 
@@ -85,7 +77,6 @@ class Show:
             s = article.find(chr(34), s) + 1
             e = article.find(chr(34), s)
             ret = article[s:e]
-            #print("DetailLink: " + ret)
         return ret
 
     def getTitle(self, article):
@@ -96,7 +87,6 @@ class Show:
             e = article.find('<', s)
             if s != -1 and e != -1:
                 ret = article[s:e]
-                #print("Title: " + ret)
         return ret
     
     def getDate(self, article):
@@ -113,10 +103,8 @@ class Show:
     def getClusterItem(self, context, page):
         item = None
         ix = page.find('clusterTeaser__item', context['charIndex'])
-        #print ix
         if ix != -1:
             ex = page.find('</a>', ix)
-            #print ex
             if ex != -1:
                 context['charIndex'] = ex + 5
                 item = page[ix:ex].replace("\n", '')

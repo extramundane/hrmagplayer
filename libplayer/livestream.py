@@ -1,11 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from libplayer.http import *
+from libplayer.http import HttpRetriever
 
 class Livestream:
     def getEpisodes(self, context, index, page):
-        print('Get livestream episode')
         context['episodes'] = list()
         episode = dict()
         
@@ -29,15 +28,16 @@ class Livestream:
         http = HttpRetriever()
         page = http.get('https://www.hr-fernsehen.de/tv-programm/index.html')
         
+        epg = list()
+        
         context['charIndex'] = 0
         item = self.getItem(context, page)
         while item != None:
-            print '**************************************'
-            #print item
-            print self.getTime(item)
-            print self.getHeadline(item)
-            print self.getSubline(item)
-            print self.getLiveFlag(item)
+            epgItem = dict()
+            epgItem['time'] = self.getTime(item)
+            epgItem['head'] = self.getHeadline(item)
+            epgItem['sub'] = self.getSubline(item)
+            epg.append(epgItem)
             item = self.getItem(context, page)
         context['charIndex'] = 0
         
@@ -70,10 +70,8 @@ class Livestream:
         item = None
         ix = context['charIndex']
         ix = page.find('c-epgBroadcast__startTime', ix)
-        #print ix
         if ix != -1:
             ex = page.find('</li>', ix)
-            #print ex
             if ex != -1:
                 item = page[ix:ex].replace("\n", '')
                 context['charIndex'] = ex + 4

@@ -130,11 +130,6 @@ class ChannelLoader:
         page = http.get(url)
         url = None
         
-        if isDebug(context):
-            print('--- Live page ----')
-            print page
-            print('------------------')
-            
         ix = page.find('1280x720')
         if ix != -1:
             ix = page.find('https', ix)
