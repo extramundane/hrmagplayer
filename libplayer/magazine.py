@@ -1,13 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import xbmc
+
 class Show:
     def getEpisodes(self, context, index, page):
         context['episodes'] = list()
         episode = None
 
         article = self.getArticle(context, page)
-        while article != None:
+        while article != None and not xbmc.Monitor().abortRequested():
             if self.hasVideo(article):
                 episode = dict()
             
@@ -26,7 +28,7 @@ class Show:
         # Check for cluster items
         clusterItem = self.getClusterItem(context, page)
 
-        while clusterItem != None:
+        while clusterItem != None and not xbmc.Monitor().abortRequested():
             episode = dict()
             episode['image'] = ''
             episode['date'] = self.getClusterDate(clusterItem)

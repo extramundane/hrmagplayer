@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import xbmc
+
 class Hessenschau:
     def getEpisodes(self, context, index, page):
         context['episodes'] = list()
@@ -8,7 +10,7 @@ class Hessenschau:
 
         article = self.getArticle(context, page)
         ix = 0
-        while article != None:
+        while article != None and not xbmc.Monitor().abortRequested():
             if episode != None:
                 if episode['date'] != None:
                     context['episodes'].append(episode)

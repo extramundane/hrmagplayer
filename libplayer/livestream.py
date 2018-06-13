@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import xbmc
 from libplayer.http import HttpRetriever
 
 class Livestream:
@@ -32,7 +33,7 @@ class Livestream:
         
         context['charIndex'] = 0
         item = self.getItem(context, page)
-        while item != None:
+        while item != None and not xbmc.Monitor().abortRequested():
             epgItem = dict()
             epgItem['time'] = self.getTime(item)
             epgItem['head'] = self.getHeadline(item)
@@ -50,7 +51,7 @@ class Livestream:
         context['charIndex'] = 0
         item = self.getItem(context, page)
         nextFlag = False
-        while item != None:
+        while item != None and not xmbc.Monitor().abortRequested():
             liveFlag = self.getLiveFlag(item)
             if liveFlag or nextFlag:
                 liveItem = dict()

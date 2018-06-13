@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import xbmc
+
 class WdrShow:
     def getEpisodes(self, context, index, page):
         context['episodes'] = list()
@@ -10,7 +12,7 @@ class WdrShow:
             return context['episodes']
         
         article = self.getArticle(context, page)
-        while article != None:
+        while article != None and not xbmc.Monitor().abortRequested():
             if context['debug']:
                 print "----------------------------------"
                 print article
