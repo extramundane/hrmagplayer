@@ -23,7 +23,6 @@ msgctxt "#30000"
 msgid "Play Livestream"
 msgstr ""
 
-
 msgctxt "#30001"
 msgid "Hessenschau"
 msgstr ""
@@ -54,5 +53,13 @@ msgstr ""
 
 msgctxt "#30008"
 msgid "WDR - Kochen mit Martina und Moritz"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Livestream"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Show Episode Guide"
 msgstr ""
 
