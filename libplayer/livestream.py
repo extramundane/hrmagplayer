@@ -51,7 +51,7 @@ class Livestream:
         context['charIndex'] = 0
         item = self.getItem(context, page)
         nextFlag = False
-        while item != None and not xmbc.Monitor().abortRequested():
+        while item != None and not xbmc.Monitor().abortRequested():
             liveFlag = self.getLiveFlag(item)
             if liveFlag or nextFlag:
                 liveItem = dict()

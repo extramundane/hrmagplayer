@@ -40,6 +40,8 @@ def list_shows(context):
             if index == 0:
                 is_folder = False
                 list_item.setProperty("IsPlayable", "true")
+                list_item.setLabel2('Label 2')
+                
             # Pass 'listing' and show index
             url = '{0}?action=listing&show={1}'.format(__url__, str(index))
             # is_folder = True means that this item opens a sub-list of lower level items.
@@ -80,19 +82,31 @@ def list_episodes(context, show):
 def playLiveStream(context, handle, loader):
         video = context['episodes'][0]['link']
         resolved_video = loader.resolveLiveUrl(context, video)
-            
-        """ Show episode guide with live and next show
-        live = Livestream()
-        items = live.getLiveAndNext(context)
-        if len(items) > 0:
-            text = "Live:  " + items[0]['time'] + '  ' + items[0]['head'] + "\n" + str(items[0]['sub'])
-            text += "\nNext:  " + items[1]['time'] + '  ' + items[1]['head'] + "\n" + str(items[1]['sub'])
-            xbmcgui.Dialog().ok('Livestream', text)
-        """
-        listitem = xbmcgui.ListItem(path=resolved_video)
-        listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
-        listitem.setMimeType('application/x-mpegurl')
-        xbmcplugin.setResolvedUrl(int(handle), True, listitem)
+        watch = True
+        
+        # Show episode guide with live and next show if set
+        epgId = 'live-epg'
+        liveEpg = context['addon'].getSetting(epgId) == 'true'
+        if liveEpg:
+            epgDlg = xbmcgui.DialogProgress()
+            epgDlg.create(context['addon'].getLocalizedString(30600))
+            live = Livestream()
+            items = live.getLiveAndNext(context)
+            epgDlg.close()
+            if len(items) > 0:
+                item_live = items[0]['time'] + '  ' + items[0]['head'] + "\n" + str(items[0]['sub'])
+                if len(items) > 1:
+                    item_next = items[1]['time'] + '  ' + items[1]['head']
+                else:
+                    item_next = ''
+                watch_ok = context['addon'].getLocalizedString(30601)
+                watch_cancel = context['addon'].getLocalizedString(30602)
+                watch = xbmcgui.Dialog().yesno('Playing now', item_live, item_next, '', watch_cancel, watch_ok)
+        if watch:
+            listitem = xbmcgui.ListItem(path=resolved_video)
+            listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
+            listitem.setMimeType('application/x-mpegurl')
+            xbmcplugin.setResolvedUrl(int(handle), True, listitem)
             
 def dispatch(url, handle, parameter):
     parameters = extractParameters(parameter)
