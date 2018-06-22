@@ -59,10 +59,7 @@ class Livestream:
                 liveItem['head'] = self.getHeadline(item)
                 liveItem['sub'] = self.getSubline(item)
                 live.append(liveItem)
-                if not nextFlag:
-                    nextFlag = True
-                else:
-                    nextFlag = False
+                nextFlag = True
             item = self.getItem(context, page)
         context['charIndex'] = 0
         return live

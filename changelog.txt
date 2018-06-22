@@ -3,3 +3,7 @@
 
 1.0.2
 - Implemented change requests from pull request
+
+1.1.0
+- Added live program guide info before streaming
+  and ability to cancel.

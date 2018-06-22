@@ -96,12 +96,16 @@ def playLiveStream(context, handle, loader):
             if len(items) > 0:
                 item_live = items[0]['time'] + '  ' + items[0]['head'] + "\n" + str(items[0]['sub'])
                 if len(items) > 1:
-                    item_next = items[1]['time'] + '  ' + items[1]['head']
+                    item_next_1 = items[1]['time'] + '  ' + items[1]['head']
+                    if len(items) > 2:
+                        item_next_2 = items[2]['time'] + '  ' + items[2]['head']
+                    else:
+                        item_next_2 = ''
                 else:
-                    item_next = ''
+                    item_next_1 = ''
                 watch_ok = context['addon'].getLocalizedString(30601)
                 watch_cancel = context['addon'].getLocalizedString(30602)
-                watch = xbmcgui.Dialog().yesno('Playing now', item_live, item_next, '', watch_cancel, watch_ok)
+                watch = xbmcgui.Dialog().yesno('Playing now', item_live, item_next_1, item_next_2, watch_cancel, watch_ok)
         if watch:
             listitem = xbmcgui.ListItem(path=resolved_video)
             listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
