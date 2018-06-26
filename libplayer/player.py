@@ -28,6 +28,8 @@ def list_shows(context):
     listing = []
     # Iterate through categories
     index = 0
+    # Get live now from EPG
+    live_epg = getEpg(context)
     for show in shows:
         if show['active']:
             # Create a list item with a text label and a thumbnail image.
@@ -40,8 +42,9 @@ def list_shows(context):
             if index == 0:
                 is_folder = False
                 list_item.setProperty("IsPlayable", "true")
-                list_item.setLabel2('Label 2')
-                
+                # Set live and next items
+                list_item.setInfo('video', {"Plot": live_epg})
+
             # Pass 'listing' and show index
             url = '{0}?action=listing&show={1}'.format(__url__, str(index))
             # is_folder = True means that this item opens a sub-list of lower level items.
@@ -52,6 +55,7 @@ def list_shows(context):
     # Add our listing to Kodi.
     # Large lists and/or slower systems benefit from adding all items at once via addDirectoryItems
     # instead of adding one by ove via addDirectoryItem.
+    xbmcplugin.setContent(__handle__, 'videos')
     xbmcplugin.addDirectoryItems(__handle__, listing, len(listing))
     # Add a sort method for the virtual folder items (alphabetically, ignore articles)
     #xbmcplugin.addSortMethod(__handle__, xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
@@ -79,38 +83,25 @@ def list_episodes(context, show):
     xbmcplugin.addDirectoryItems(__handle__, listing, len(listing))
     xbmcplugin.endOfDirectory(__handle__)
     
+def getEpg(context):
+    live = Livestream()
+    items = live.getLiveAndNext(context)
+    item_live = ''
+    item_next = ''
+    if len(items) > 0:
+        item_live = items[0]['time'] + '  ' + items[0]['head']
+        if len(items) > 1:
+            item_next = items[1]['time'] + '  ' + items[1]['head']
+    return context['addon'].getLocalizedString(30600) + '\n\n' + item_live + '\n' + item_next
+    
+    
 def playLiveStream(context, handle, loader):
         video = context['episodes'][0]['link']
         resolved_video = loader.resolveLiveUrl(context, video)
-        watch = True
-        
-        # Show episode guide with live and next show if set
-        epgId = 'live-epg'
-        liveEpg = context['addon'].getSetting(epgId) == 'true'
-        if liveEpg:
-            epgDlg = xbmcgui.DialogProgress()
-            epgDlg.create(context['addon'].getLocalizedString(30600))
-            live = Livestream()
-            items = live.getLiveAndNext(context)
-            epgDlg.close()
-            if len(items) > 0:
-                item_live = items[0]['time'] + '  ' + items[0]['head'] + "\n" + str(items[0]['sub'])
-                if len(items) > 1:
-                    item_next_1 = items[1]['time'] + '  ' + items[1]['head']
-                    if len(items) > 2:
-                        item_next_2 = items[2]['time'] + '  ' + items[2]['head']
-                    else:
-                        item_next_2 = ''
-                else:
-                    item_next_1 = ''
-                watch_ok = context['addon'].getLocalizedString(30601)
-                watch_cancel = context['addon'].getLocalizedString(30602)
-                watch = xbmcgui.Dialog().yesno('Playing now', item_live, item_next_1, item_next_2, watch_cancel, watch_ok)
-        if watch:
-            listitem = xbmcgui.ListItem(path=resolved_video)
-            listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
-            listitem.setMimeType('application/x-mpegurl')
-            xbmcplugin.setResolvedUrl(int(handle), True, listitem)
+        listitem = xbmcgui.ListItem(path=resolved_video)
+        listitem.setInfo('video', {'Title': 'Livestream', 'Genre': ''})
+        listitem.setMimeType('application/x-mpegurl')
+        xbmcplugin.setResolvedUrl(int(handle), True, listitem)
             
 def dispatch(url, handle, parameter):
     parameters = extractParameters(parameter)

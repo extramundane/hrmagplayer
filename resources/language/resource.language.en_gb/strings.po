@@ -80,15 +80,7 @@ msgid "Show Episode Guide"
 msgstr ""
 
 msgctxt "#30600"
-msgid "Fetch program guide ..."
-msgstr ""
-
-msgctxt "#30601"
-msgid "Watch"
-msgstr ""
-
-msgctxt "#30602"
-msgid "Cancel"
+msgid "Playing now"
 msgstr ""
 
 
