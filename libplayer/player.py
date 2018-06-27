@@ -17,6 +17,8 @@ __handle__ = int(sys.argv[1])
 
 __context__ = None
 
+__liveStr__ = None
+
 def list_shows(context):
     """
     Create the list of video categories in the Kodi interface.
@@ -92,7 +94,12 @@ def getEpg(context):
         item_live = items[0]['time'] + '  ' + items[0]['head']
         if len(items) > 1:
             item_next = items[1]['time'] + '  ' + items[1]['head']
-    return context['addon'].getLocalizedString(30600) + '\n\n' + item_live + '\n' + item_next
+    __liveStr__ = context['addon'].getLocalizedString(30600).encode('latin-1')
+    __liveStr__ += "\n\n"
+    __liveStr__ += item_live
+    __liveStr__ += "\n"
+    __liveStr__ += item_next
+    return __liveStr__
     
     
 def playLiveStream(context, handle, loader):
