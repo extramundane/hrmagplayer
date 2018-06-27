@@ -76,7 +76,7 @@ msgid "Livestream"
 msgstr ""
 
 msgctxt "#30031"
-msgid "Show Episode Guide"
+msgid "Fetch Episode Guide"
 msgstr ""
 
 msgctxt "#30600"

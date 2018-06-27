@@ -31,7 +31,9 @@ def list_shows(context):
     # Iterate through categories
     index = 0
     # Get live now from EPG
-    live_epg = getEpg(context)
+    live_epg = None
+    if context['addon'].getSetting('live-epg') == 'true':
+           live_epg = getEpg(context)
     for show in shows:
         if show['active']:
             # Create a list item with a text label and a thumbnail image.
@@ -45,7 +47,8 @@ def list_shows(context):
                 is_folder = False
                 list_item.setProperty("IsPlayable", "true")
                 # Set live and next items
-                list_item.setInfo('video', {"Plot": live_epg})
+                if live_epg != None:
+                    list_item.setInfo('video', {"Plot": live_epg})
 
             # Pass 'listing' and show index
             url = '{0}?action=listing&show={1}'.format(__url__, str(index))
