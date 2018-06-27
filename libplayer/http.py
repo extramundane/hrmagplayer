@@ -10,7 +10,6 @@ class HttpRetriever:
         self.categoryurl = '/sendungen'
 	
     def get(self, url):
-        print "Get " + url
         values = {}
         headers = {}
 
