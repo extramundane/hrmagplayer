@@ -122,14 +122,16 @@ def dispatch(url, handle, parameter):
     if parameters != None:
         if 'action' in parameters:
             action = parameters['action']
+            xbmc.log('Action: ' + action, xbmc.LOGINFO)
         if 'show' in parameters:
             show = int(parameters['show'])
+            xbmc.log('Show: ' + str(show), xbmc.LOGDEBUG)
         if 'url' in parameters:
             url = parameters['url']
         if 'episode' in parameters:
             episode = parameters['episode']
     else:
-        xbmc.log("No actions", xbmc.LOGINFO)
+        xbmc.log("No parameters", xbmc.LOGINFO)
         action = None   
     
     addon = xbmcaddon.Addon()

@@ -127,6 +127,7 @@ class ChannelLoader:
     def loadEpisodeList(self, context, index):
         id = getShowId(context, index)
         url = context['shows'][id]['url']
+        xbmc.log("Show id: %s, URL: %s" % (id, url), xbmc.LOGDEBUG)
         
         http = HttpRetriever()
         page = http.get(url)
@@ -136,7 +137,7 @@ class ChannelLoader:
             show = Livestream()
         elif id == 'hessenschau':
             show = Hessenschau()
-        elif index == 'wdr-kochen':
+        elif id == 'wdr-kochen':
             show = WdrShow()
         else:
             show = Show()
