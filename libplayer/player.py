@@ -39,9 +39,7 @@ def list_shows(context):
             # Create a list item with a text label and a thumbnail image.
             list_item = xbmcgui.ListItem(label=show['name'])
             list_item.setArt({"thumb": show['image']})
- 
-            # Create a URL for the plugin recursive callback.
-            # Example: plugin://plugin.video.example/?action=listing&category=Animals
+
             is_folder = True
             if index == 0:
                 is_folder = False
@@ -57,19 +55,12 @@ def list_shows(context):
             # Add our item to the listing as a 3-element tuple.
             listing.append((url, list_item, is_folder))
         index += 1
-    # Add our listing to Kodi.
-    # Large lists and/or slower systems benefit from adding all items at once via addDirectoryItems
-    # instead of adding one by ove via addDirectoryItem.
     xbmcplugin.setContent(__handle__, 'videos')
     xbmcplugin.addDirectoryItems(__handle__, listing, len(listing))
-    # Add a sort method for the virtual folder items (alphabetically, ignore articles)
-    #xbmcplugin.addSortMethod(__handle__, xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
-    # Finish creating a virtual folder.
+
     xbmcplugin.endOfDirectory(__handle__)
     
-def list_episodes(context, show):
-    # Get video categories
-    showid = context['showList']
+def list_episodes(context, showIndex):
     episodes = context['episodes']
     # Create a list for our items.
     listing = []
@@ -79,12 +70,15 @@ def list_episodes(context, show):
         # Create a list item with a text label and a thumbnail image.
         list_item = xbmcgui.ListItem(label=episode['title'], thumbnailImage=episode['image'])
         list_item.setArt({"thumb": episode['image']})
+        if 'text' in episode:
+            list_item.setInfo('video', {"Plot": episode['text']})
 
-        url = '{0}?action=play&url={1}&episode={2}&show={3}'.format(__url__, episode['link'], encode(episode['title']), show)
+        url = '{0}?action=play&url={1}&episode={2}&show={3}'.format(__url__, episode['link'], encode(episode['title']), showIndex)
         is_folder = False
         list_item.setProperty("IsPlayable", "true")
         listing.append((url, list_item, is_folder))
         index += 1
+    xbmcplugin.setContent(__handle__, 'videos')
     xbmcplugin.addDirectoryItems(__handle__, listing, len(listing))
     xbmcplugin.endOfDirectory(__handle__)
     
@@ -104,7 +98,6 @@ def getEpg(context):
     __liveStr__ += item_next
     return __liveStr__
     
-    
 def playLiveStream(context, handle, loader):
         video = context['episodes'][0]['link']
         resolved_video = loader.resolveLiveUrl(context, video)
@@ -116,7 +109,7 @@ def playLiveStream(context, handle, loader):
 def dispatch(url, handle, parameter):
     parameters = extractParameters(parameter)
     action = None
-    show = None
+    showIndex = None
     url = None
     episode = None
     if parameters != None:
@@ -124,8 +117,8 @@ def dispatch(url, handle, parameter):
             action = parameters['action']
             xbmc.log('Action: ' + action, xbmc.LOGINFO)
         if 'show' in parameters:
-            show = int(parameters['show'])
-            xbmc.log('Show: ' + str(show), xbmc.LOGDEBUG)
+            showIndex = int(parameters['show'])
+            xbmc.log('Show: ' + str(showIndex), xbmc.LOGDEBUG)
         if 'url' in parameters:
             url = parameters['url']
         if 'episode' in parameters:
@@ -141,18 +134,18 @@ def dispatch(url, handle, parameter):
         list_shows(context)
     elif action == 'listing':
         loader = ChannelLoader()
-        loader.loadEpisodeList(context, show)
+        loader.loadEpisodeList(context, showIndex)
         # Play live stream immediately
-        if show == 0:
+        if showIndex == 0:
             playLiveStream(context, handle, loader)
         else:
-            list_episodes(context, show)
+            list_episodes(context, showIndex)
     elif action == 'play':
         video = getVideoLink(decode(url))
 
         listitem = xbmcgui.ListItem(path=video)
-        id = getShowId(context, show)
-        title = context['showList'][show]['name']
+        id = getShowId(context, showIndex)
+        title = context['showList'][showIndex]['name']
         ep = decode(episode)
 
         listitem.setInfo('video', {'Title': title, 'Genre': ep})
