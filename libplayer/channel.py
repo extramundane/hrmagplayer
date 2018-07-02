@@ -31,6 +31,7 @@ class ChannelContext(dict):
         wetterId = 'alle-wetter'
         halloId = 'hallo-hessen'
         herkulesId = 'herkules'
+        tipId = 'hessentipp'
         wdrId = 'wdr-kochen'
         
         # Maybe create this array of series thumbnails dynamically
@@ -46,6 +47,7 @@ class ChannelContext(dict):
                   wetterId: 'https://www.hr-fernsehen.de/sendungen-a-z/alle-wetter/bannerbild-alle-wetter-100~_t-1516872349178_v-16to9__small.jpg',
                   halloId: 'https://www.hr-fernsehen.de/sendungen-a-z/hallo-hessen/banner-hallo-hessen-100~_t-1505303286797_v-16to9__small.jpg',
                   herkulesId: 'https://www.hr-fernsehen.de/sendungen-a-z/herkules/banner-herkules-100~_t-1504790718827_v-16to9__small.jpg',
+                  tipId: 'https://www.hr-fernsehen.de/sendungen-a-z/hessentipp/banner-hessentipp-100~_t-1507723667576_v-16to9__small.jpg',
                   wdrId: 'https://www1.wdr.de/fernsehen/kochen-mit-martina-und-moritz/sendungen/kochen-mit-martina-und-moritz-152~_v-gseaclassicxl.jpg'
                   }
         actives = None
@@ -63,6 +65,7 @@ class ChannelContext(dict):
                 wetterId: addon.getSetting(wetterId) == 'true',
                 halloId: addon.getSetting(halloId) == 'true',
                 herkulesId: addon.getSetting(herkulesId) == 'true',
+                tipId: addon.getSetting(tipId) == 'true',
                 wdrId: addon.getSetting(wdrId) == 'true'
                 }
         else:
@@ -80,6 +83,7 @@ class ChannelContext(dict):
                 wetterId: True,
                 halloId: True,
                 herkulesId: True,
+                tipId: True,
                 wdrId: True
                 }
 
@@ -96,6 +100,7 @@ class ChannelContext(dict):
             {'name': 'alle wetter', 'id': wetterId, 'image' : tNails[wetterId], 'active': actives[wetterId]},
             {'name': 'hallo hessen', 'id': halloId, 'image': tNails[halloId], 'active': actives[halloId]},
             {'name': 'herkules', 'id': herkulesId, 'image': tNails[herkulesId], 'active': actives[herkulesId]},
+            {'name': 'hessentipp', 'id': tipId, 'image': tNails[tipId], 'active': actives[tipId]},
             {'name': 'WDR - Kochen mit Martina und Moritz', 'id': wdrId, 'image': tNails[wdrId], 'active' : actives[wdrId]}
             ]
         return shows

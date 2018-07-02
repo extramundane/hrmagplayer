@@ -71,6 +71,10 @@ msgctxt "#30012"
 msgid "herkules"
 msgstr ""
 
+msgctxt "#30013"
+msgid "hessentipp"
+msgstr ""
+
 msgctxt "#30030"
 msgid "Livestream"
 msgstr ""

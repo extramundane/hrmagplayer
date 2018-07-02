@@ -12,7 +12,8 @@
     <setting id="tobis-staedtetrip" type="bool" default="true" label="30009"/>
     <setting id="alle-wetter" type="bool" default="true" label="30010"/>
     <setting id="hallo-hessen" type="bool" default="true" label="30011"/>
-    <setting id="herkules" type="bool" default="true" label="30012"/>    
+    <setting id="herkules" type="bool" default="true" label="30012"/>
+    <setting id="hessentipp" type="bool" default="true" label="30013"/>
     <setting id="wdr-kochen" type="bool" default="true" label="30008"/>
   </category>
   <category label="30030">
