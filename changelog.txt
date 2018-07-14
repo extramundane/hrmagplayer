@@ -9,4 +9,7 @@
   (see 'Settings' to enable or disable fetching/displaying)
 - Added more magazine content
   (see 'Settings' to disable or enable certain shows showing up in list)
-  
+
+  1.1.1
+- Added magazine 'hessentip'
+- Fixed live stream URL scraping - web page content changed by provider

@@ -18,11 +18,11 @@ class Livestream:
     
     def getLiveLink(self, page):
         link = None
-        s = page.find('video" content="')
+        s = page.find('streamUrl":"')
         if s != -1:
-            e = page.find('"', s + 16)
+            e = page.find('"', s + 12)
             if e != -1:
-                link = page[s + 16 : e]
+                link = page[s + 12 : e]
         return link
 
     def getChannelGuide(self, context):
