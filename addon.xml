@@ -17,6 +17,7 @@
 1.1.1
 - Added magazine 'hessentip'
 - Fixed live stream URL scraping - web page content changed by provider
+- Fixed Hessenschau (and maybe other) URL scraping - video URL changed by provider
         </news>
         <assets>
             <icon>icon.png</icon>

@@ -29,12 +29,20 @@ def getVideoLink(url):
         if ix != -1:
             ex = page.find('"', ix + 5)
             video = page[ix+5:ex]
+            return video
+    # Check for Hessenschau link
+    ix = page.find('videoUrl')
+    if ix != -1:
+        ex = page.find('"', ix + 11)
+        video = page[ix+11:ex]
+        return video
     # Check for WDR video
     ix = page.find('//wdrmedien')   
     if ix != -1:
         ex = page.find(chr(34), ix)
         if ex != -1:
             video = 'https:' + page[ix:ex]
+            return video
           
     return video
 
