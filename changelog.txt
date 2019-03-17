@@ -10,7 +10,10 @@
 - Added more magazine content
   (see 'Settings' to disable or enable certain shows showing up in list)
 
-  1.1.1
+1.1.1
 - Added magazine 'hessentip'
 - Fixed live stream URL scraping - web page content changed by provider
 - Fixed Hessenschau (and maybe other) URL scraping - video URL changed by provider
+
+1.1.2
+- Fixed more strict listitem info setting for Kodi Leia
