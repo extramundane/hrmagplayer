@@ -72,6 +72,8 @@ def list_episodes(context, showIndex):
         list_item.setArt({"thumb": episode['image']})
         if 'text' in episode:
             list_item.setInfo('video', {"Plot": episode['text']})
+        else:
+            list_item.setInfo('video', {'Plot': ''})
 
         url = '{0}?action=play&url={1}&episode={2}&show={3}'.format(__url__, episode['link'], encode(episode['title']), showIndex)
         is_folder = False
